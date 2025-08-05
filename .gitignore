@@ -1,0 +1,19 @@
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Virtual environment
+venv/
+
+# Secret keys and config
+.env
+
+# Test and output artifacts
+*.txt
+*.pdf
+*.log
+
+# VSCode or IDE settings (optional, for team collaboration)
+.vscode/
+.idea/
