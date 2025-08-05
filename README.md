@@ -15,5 +15,5 @@ A Streamlit web app that analyzes how well a resume matches a job description us
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/resume-job-matcher.git
+   git clone https://github.com/Faiz2468/resume-job-matcher.git
    cd resume-job-matcher
