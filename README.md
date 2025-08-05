@@ -1,17 +1,17 @@
-# 📄 Resume–Job Relevance Matcher
+# Resume–Job Relevance Matcher
 
 A Streamlit web app that analyzes how well a resume matches a job description using **keyword matching** and **semantic similarity with AI**.
 
-## 🚀 Features
+## Features
 
-- 📤 Upload resume (PDF, DOCX, or TXT)
-- 📝 Paste job description
-- 🔑 Keyword extraction & fuzzy matching
-- 🤖 Semantic similarity using Sentence Transformers
-- 💡 AI-powered resume improvement suggestions (OpenAI)
-- 📥 Downloadable match report
+- Upload resume (PDF, DOCX, or TXT)
+- Paste job description
+- Keyword extraction & fuzzy matching
+- Semantic similarity using Sentence Transformers
+- AI-powered resume improvement suggestions (OpenAI)
+- Downloadable match report
 
-## 🛠️ Installation
+## Installation
 
 1. Clone this repository:
    ```bash

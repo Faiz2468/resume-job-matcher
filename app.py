@@ -8,26 +8,26 @@ import os
 import openai
 from dotenv import load_dotenv
 
-# --- Load environment variables from .env ---
+# Load environment variables from .env
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# --- Streamlit Page Config ---
+# Streamlit Page Config
 st.set_page_config(page_title="📄 Resume–Job Relevance Matcher", layout="centered")
 st.title("📄 Resume–Job Relevance Matcher")
 
-# --- File Upload & Job Description ---
+# File Upload & Job Description
 uploaded_file = st.file_uploader("Upload your resume (PDF, TXT, or DOCX)", type=["pdf", "txt", "docx"])
 job_description = st.text_area("Paste the job description here", height=200)
 
-# --- Load Transformer Model Once ---
+# Load Transformer Model Once
 @st.cache_resource
 def load_model():
     return SentenceTransformer("all-MiniLM-L6-v2")
 
 model = load_model()
 
-# --- Universal Resume Text Extractor ---
+# Universal Resume Text Extractor
 def get_text_from_file(uploaded_file):
     file_type = uploaded_file.name.split('.')[-1].lower()
 
@@ -40,7 +40,7 @@ def get_text_from_file(uploaded_file):
         return "\n".join([para.text for para in doc.paragraphs])
     return ""
 
-# --- Match Report Generator ---
+# Match Report Generator
 def generate_match_report(filename, job_desc, matched_keywords, keyword_score, relevance_score):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     report = f"""📄 Resume–Job Relevance Report
@@ -65,7 +65,7 @@ def generate_match_report(filename, job_desc, matched_keywords, keyword_score, r
 
     return report
 
-# --- OpenAI Resume Suggestions ---
+# OpenAI Resume Suggestions
 def generate_resume_suggestions(missing_keywords):
     if not missing_keywords:
         return ["Your resume covers all important skills well!"]
@@ -89,7 +89,7 @@ def generate_resume_suggestions(missing_keywords):
     except Exception as e:
         return [f"Error generating suggestions: {e}"]
 
-# --- Main Logic ---
+# Main Logic
 if uploaded_file and job_description.strip():
     with st.spinner("Analyzing match..."):
         resume_text = get_text_from_file(uploaded_file)
@@ -104,14 +104,14 @@ if uploaded_file and job_description.strip():
         similarity_score = util.cos_sim(resume_embedding, job_embedding).item()
         percentage_score = round(similarity_score * 100, 2)
 
-        # --- Display Keywords ---
+        # Display Keywords
         with st.expander("🔍 Extracted Keywords"):
             st.markdown("**📄 Resume Keywords:**")
             st.markdown(", ".join(resume_keywords) or "_None_")
             st.markdown("**📝 Job Description Keywords:**")
             st.markdown(", ".join(job_keywords) or "_None_")
 
-        # --- Keyword Match Score ---
+        # Keyword Match Score
         st.subheader("🔑 Keyword Match")
         st.metric(label="Keyword Match Score", value=f"{keyword_results['match_score']:.2f}%")
 
@@ -129,7 +129,7 @@ if uploaded_file and job_description.strip():
         else:
             st.markdown("_No matched keywords found._")
 
-        # --- Semantic Score ---
+        # Semantic Score
         st.subheader("🤖 Semantic Relevance")
         st.metric(label="Semantic Relevance Score", value=f"{percentage_score}%")
 
@@ -141,7 +141,7 @@ if uploaded_file and job_description.strip():
         else:
             st.error("❌ Low match. Consider tailoring your resume more closely to this role.")
 
-        # --- Improvement Suggestions ---
+        # Improvement Suggestions
         missing_keywords = set(job_keywords) - set(resume_keywords)
 
         if percentage_score < 80:
@@ -155,14 +155,14 @@ if uploaded_file and job_description.strip():
         else:
             st.info("Your resume matches very well, no major suggestions needed.")
 
-        # --- AI Resume Suggestions ---
+        # AI Resume Suggestions
         if percentage_score < 80 and missing_keywords:
             st.subheader("🤖 AI-Generated Resume Suggestions")
             suggestions = generate_resume_suggestions(missing_keywords)
             for suggestion in suggestions:
                 st.markdown(f"- {suggestion}")
 
-        # --- Downloadable Match Report ---
+        # Downloadable Match Report
         report_text = generate_match_report(
             filename=uploaded_file.name,
             job_desc=job_description,

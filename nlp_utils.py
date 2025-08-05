@@ -7,19 +7,19 @@ def extract_keywords(text):
     doc = nlp(text)
     keywords = set()
 
-    # --- Add Noun Chunks ---
+    # Add Noun Chunks
     for chunk in doc.noun_chunks:
         chunk_text = chunk.text.strip().lower()
         if chunk_text and not chunk.root.is_stop:
             keywords.add(chunk_text)
 
-    # --- Add Named Entities ---
+    # Add Named Entities
     for ent in doc.ents:
         ent_text = ent.text.strip().lower()
         if ent.label_ in {"ORG", "PERSON", "GPE", "PRODUCT"}:
             keywords.add(ent_text)
 
-    # --- Add Significant Tokens ---
+    # Add Significant Tokens
     for token in doc:
         if token.pos_ in {"NOUN", "PROPN", "ADJ"} and not token.is_stop and token.is_alpha:
             keywords.add(token.lemma_.lower())
